@@ -1,7 +1,6 @@
-#pragma once
+#ifndef GAME_OBJECT_H
+#define GAME_OBJECT_H
 
-#ifndef GAMEOBJECT_H
-#define GAMEOBJECT_H
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -35,4 +34,4 @@ protected:
 
 };
 
-#endif
+#endif // !GAME_OBJECT_H

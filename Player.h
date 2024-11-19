@@ -1,4 +1,3 @@
-#pragma once
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -6,9 +5,9 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
+#include "nohaGame.h"
 #include "GameObject.h"
 #include "Subject.h"
-#include "nohaGame.h"
 
 class Player : public GameObject, public Subject {
 	
@@ -30,5 +29,4 @@ private:
     bool canFire;
 };
 
-
-#endif PLAYER_H
+#endif

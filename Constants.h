@@ -1,4 +1,7 @@
-#pragma once
+#ifndef CONSTANTS_H
+#define CONSTATNS_H
+
+
 
 // The Width of the screen
 const unsigned int SCREEN_WIDTH = 600;
@@ -6,3 +9,6 @@ const unsigned int SCREEN_WIDTH = 600;
 const unsigned int SCREEN_HEIGHT = 700;
 
 const int MAX_OBSERVERS = 100;
+
+
+#endif // !CONSTANTS_H

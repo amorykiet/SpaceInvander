@@ -1,17 +1,14 @@
-#pragma once
+#ifndef NOHA_GAME_H
+#define NOHA_GAME_H
 
-#ifndef GAME_H
-#define GAME_H
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <set>
 #include <map>
 
-#include "Observer.h"
-#include "SpriteRenderer.h"
 #include "GameObject.h"
-#include "nohaGame.h"
+#include "Observer.h"
 
 // Represents the current state of the game
 enum GameState {
@@ -53,4 +50,4 @@ private:
     
 };
 
-#endif
+#endif // !NOHA_GAME_H

@@ -1,6 +1,6 @@
-#pragma once
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef TEXTURE_2D_H
+#define TEXTURE_2D_H
+
 
 #include <glad/glad.h>
 

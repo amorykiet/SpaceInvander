@@ -1,8 +1,10 @@
-#pragma once
+#ifndef BULLET_H
+#define BULLET_H
 
+
+#include "nohaGame.h"
 #include "GameObject.h"
 #include "Subject.h"
-#include "nohaGame.h"
 
 class Bullet : public GameObject, public Subject {
 
@@ -25,3 +27,5 @@ private:
     float speed;
     glm::vec2 direction;
 };
+
+#endif // !BULLET_H
