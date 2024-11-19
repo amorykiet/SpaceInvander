@@ -4,8 +4,15 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <string>
 
 #include "SpriteRenderer.h"
+
+enum Tag {
+    EnemyTag,
+    PlayerTag,
+    BulletTag
+};
 
 // Container object for holding all state relevant for a single
 // game object entity. Each object in the game likely needs the
@@ -16,6 +23,7 @@ public:
     // object state
 
     int ID;
+    Tag tag;
     glm::vec2   Position, Size;
     glm::vec3   Color;
     float       Rotation;

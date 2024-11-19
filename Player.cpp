@@ -4,12 +4,13 @@
 
 Player::Player(): GameObject(), speed(200.0f), reloadTime(1.0f)
 {
-
+	tag = Tag::PlayerTag;
 }
 
 Player::Player(glm::vec2 pos, Texture2D sprite, glm::vec3 color): 
 	GameObject(pos, glm::vec2(50.0f, 50.0f), sprite, color), speed(200.0f), reloadTime(1.0f)
 {
+	tag = Tag::PlayerTag;
 
 }
 
@@ -21,7 +22,7 @@ void Player::Init()
 
 void Player::Fire()
 {
-	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, -10.0f), Sprite, glm::vec2(0.0f, -1.0f));
+	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, -40.0f), Sprite, glm::vec2(0.0f, -1.0f));
 
 	//NOT GOOD
 	bullet->AddWorld(world);

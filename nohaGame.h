@@ -24,10 +24,11 @@ class nohaGame: public Observer
 {
 public:
     // game state
-    GameState               State;
-    unsigned int            Width, Height;
-    int                     NumberOfGameObjects;
-    std::set<int>           EmptySlotsOfGameObjects;
+    GameState                   State;
+    unsigned int                Width, Height;
+    int                         NumberOfGameObjects;
+    std::set<int>               EmptySlotsOfGameObjects;
+    std::map<int, GameObject*>  gameObjects;
 
     // constructor/destructor
     nohaGame(unsigned int width, unsigned int height);
@@ -46,7 +47,6 @@ private:
 
     // Game-related State data
     SpriteRenderer* Renderer;
-    std::map<int, GameObject*> gameObjects;
     
 };
 

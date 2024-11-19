@@ -18,6 +18,7 @@ public:
     void Update(float dt) override;
     void Init() override;
     void Spawn();
+    bool CheckCollisionWithWorld(GameObject& other);
     virtual void AddWorld(nohaGame* world);
 
 private:

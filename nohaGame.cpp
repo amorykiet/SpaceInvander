@@ -3,6 +3,7 @@
 #include "nohaGame.h"
 #include "Player.h"
 #include "ResourceManager.h"
+#include "Enemy.h"
 
 
 nohaGame::nohaGame(unsigned int width, unsigned int height)
@@ -42,11 +43,13 @@ void nohaGame::Init()
     ResourceManager::LoadTexture("face.png", true, "face");
 
     //Create things
-    Player* faceMan = new Player(glm::vec2(Width/2, Height - 100.0f), ResourceManager::GetTexture("face"));
+    Player* faceMan = new Player(glm::vec2(Width/2, Height - 50.0f), ResourceManager::GetTexture("face"));
     faceMan->AddWorld(this);
     AddGameObject(faceMan);
 
-
+    Enemy* faceEnemy = new Enemy(glm::vec2(Width / 2, 200.0f), ResourceManager::GetTexture("face"));
+    faceEnemy->AddWorld(this);
+    AddGameObject(faceEnemy);
 
 
     // Init all things
