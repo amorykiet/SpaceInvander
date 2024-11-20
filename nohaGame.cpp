@@ -98,7 +98,7 @@ void nohaGame::Render()
     ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH/2 - 60.0f, 0), ImGuiCond_Always);
     ImGui::SetNextWindowSize(ImVec2(200, 80), ImGuiCond_Always);
 
-    ImGui::Begin("SPACE INVANDER", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::Begin("SMILE INVANDER", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
     ImGui::Text("Score: %i", score);
     ImGui::Text("High Score: %i", hiScore);
