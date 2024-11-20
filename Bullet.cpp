@@ -8,13 +8,12 @@
 
 Bullet::Bullet(): GameObject(), speed(200.0f), direction(glm::vec2(0.0f, 1.0f)), start(false)
 {
-	tag = Tag::BulletTag;
 }
 
-Bullet::Bullet(glm::vec2 pos, Texture2D sprite, glm::vec2 direction, glm::vec3 color): 
+Bullet::Bullet(glm::vec2 pos, Texture2D sprite, glm::vec2 direction, Tag tag, glm::vec3 color):
 	GameObject(pos, glm::vec2(20.0f, 20.0f), sprite, color), direction(direction), speed(200.0f), start(false)
 {
-	tag = Tag::BulletTag;
+	this->tag = tag;
 }
 
 void Bullet::Update(float dt)
@@ -27,12 +26,29 @@ void Bullet::Update(float dt)
 	GameObject* other = new GameObject();
 	if (CheckCollisionWithWorld(*other))
 	{
-		if (other->tag == EnemyTag)
+		if (other->tag == EnemyTag && tag == BulletFromPlayerTag)
 		{
 			Destroyed = true;
 			notify(other, Event::DESTROYSGAMEOBJECT);
 			notify(this, Event::DESTROYSGAMEOBJECT);
 		}
+
+		if (other->tag == PlayerTag && tag == BulletFromEnemyTag)
+		{
+			Destroyed = true;
+			notify(other, Event::DESTROYSGAMEOBJECT);
+			notify(this, Event::DESTROYSGAMEOBJECT);
+		}
+
+		if (other->tag == BulletFromEnemyTag && tag == BulletFromPlayerTag || 
+			other->tag == BulletFromPlayerTag && tag == BulletFromEnemyTag
+			)
+		{
+			Destroyed = true;
+			notify(other, Event::DESTROYSGAMEOBJECT);
+			notify(this, Event::DESTROYSGAMEOBJECT);
+		}
+
 	}
 
 	if (Position.x < 0.0f || Position.x > SCREEN_WIDTH || Position.y < 150.0f || Position.y > SCREEN_HEIGHT) {

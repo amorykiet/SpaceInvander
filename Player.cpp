@@ -22,7 +22,7 @@ void Player::Init()
 
 void Player::Fire()
 {
-	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, -40.0f), Sprite, glm::vec2(0.0f, -1.0f));
+	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, -40.0f), Sprite, glm::vec2(0.0f, -1.0f), Tag::BulletFromPlayerTag);
 
 	//NOT GOOD
 	bullet->AddWorld(world);

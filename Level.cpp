@@ -5,17 +5,33 @@
 #include <sstream>
 #include <iostream>
 
-Level::Level(): GameObject()
+#include <iterator>
+
+Level::Level(): GameObject(), numberOfEnemies(0)
 {
 }
 
 void Level::Update(float dt)
 {
+    if (timeCount > 0.0f) {
+        timeCount -= dt;
+    }
+    else {
+        timeCount = timeToFire;
+        if (numberOfEnemies != 0) {
+
+            auto enemy = inGameEnemies.begin();
+            std::advance(enemy, rand() % inGameEnemies.size());
+        
+            enemy->second->Fire();
+        }
+    }
 }
 
 void Level::Init()
 {
-    
+    timeToFire = 1.5f;
+    timeCount = timeToFire;
 }
 
 void Level::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
@@ -79,7 +95,16 @@ void Level::Spawn()
     {
         enemy->AddWorld(world);
         world->AddGameObject(enemy);
+        numberOfEnemies++;
+        inGameEnemies[enemy->ID] = enemy;
     }
+}
+
+void Level::RemoveEnemy(int ID)
+{
+    inGameEnemies.erase(ID);
+    numberOfEnemies--;
+    std::cout << "Number of Enemies: " << numberOfEnemies << " vs " << inGameEnemies.size() << std::endl;
 }
 
 void Level::AddWorld(nohaGame* world)

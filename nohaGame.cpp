@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Level.h"
 
+Level* level;
 
 nohaGame::nohaGame(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Width(width), Height(height), NumberOfGameObjects(0)
@@ -48,10 +49,12 @@ void nohaGame::Init()
     faceMan->AddWorld(this);
     AddGameObject(faceMan);
 
-    Level* level = new Level();
+    level = new Level();
     level->Load("Squad.lvl", Width * 4/5, Height / 4);
     level->AddWorld(this);
     level->Spawn();
+
+    AddGameObject(level);
 
 
     // Init all things
@@ -106,13 +109,16 @@ void nohaGame::AddGameObject(GameObject* gameObject)
 
 
     gameObjects[gameObject->ID] = gameObject;
-    std::cout << "ID: " << gameObject->ID << std::endl;
 }
 
 void nohaGame::RemoveGameObject(GameObject* gameObject)
 {
     gameObjects.erase(gameObject->ID);
     EmptySlotsOfGameObjects.insert(gameObject->ID);
+    if (gameObject->tag == EnemyTag)
+    {
+        level->RemoveEnemy(gameObject->ID);
+    }
     delete gameObject;
 }
 
@@ -121,6 +127,7 @@ void nohaGame::onNotify(GameObject* entity, Event event)
     switch (event)
     {
     case Event::DESTROYSGAMEOBJECT:
+        entity->Destroyed = true;
         RemoveGameObject(entity);
     }
 }

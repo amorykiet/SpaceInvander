@@ -11,7 +11,8 @@
 enum Tag {
     EnemyTag,
     PlayerTag,
-    BulletTag
+    BulletFromPlayerTag,
+    BulletFromEnemyTag
 };
 
 // Container object for holding all state relevant for a single

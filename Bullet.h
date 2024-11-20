@@ -13,7 +13,7 @@ public:
 
     // constructor(s)
     Bullet();
-    Bullet(glm::vec2 pos, Texture2D sprite, glm::vec2 direction, glm::vec3 color = glm::vec3(1.0f));
+    Bullet(glm::vec2 pos, Texture2D sprite, glm::vec2 direction, Tag tag, glm::vec3 color = glm::vec3(1.0f));
 
     void Update(float dt) override;
     void Init() override;

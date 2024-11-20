@@ -1,6 +1,6 @@
 #include "Enemy.h"
 #include "Bullet.h"
-
+#include <iostream>
 
 Enemy::Enemy() : GameObject()
 {
@@ -8,7 +8,7 @@ Enemy::Enemy() : GameObject()
 }
 
 Enemy::Enemy(glm::vec2 pos, Texture2D sprite, glm::vec3 color) :
-	GameObject(pos, glm::vec2(50.0f, 50.0f), sprite, color), timeMove(0.5f), stepLength(5.0f)
+	GameObject(pos, glm::vec2(50.0f, 50.0f), sprite, color), timeMove(0.5f), stepLength(10.0f)
 {
 	tag = EnemyTag;
 }
@@ -24,7 +24,12 @@ void Enemy::Init()
 
 void Enemy::Fire()
 {
-	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, -10.0f), Sprite, glm::vec2(0.0f, 1.0f));
+	if (Destroyed) {
+		std::cout << "Destroyed" << std::endl;
+		return;
+	}
+	std::cout << "Fired" << std::endl;
+	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, 20.0f), Sprite, glm::vec2(0.0f, 1.0f), BulletFromEnemyTag);
 
 	//NOT GOOD
 	bullet->AddWorld(world);
