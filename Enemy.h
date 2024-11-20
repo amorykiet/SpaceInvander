@@ -28,7 +28,11 @@ public:
 
 private:
 
-    float countTime;
-    float moveTime;
-    nohaGame* world;
+    float       timeCount;
+    float       timeMove;
+    float       stepLength;
+    int         stepCount;
+    nohaGame*   world;
+
+    EnemyMoveState moveState;
 };
