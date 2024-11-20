@@ -30,6 +30,7 @@ void Bullet::Update(float dt)
 		if (other->tag == EnemyTag && tag == BulletFromPlayerTag)
 		{
 			Destroyed = true;
+			notify(other, Event::ENEMYHIT);
 			notify(other, Event::DESTROYSGAMEOBJECT);
 			notify(this, Event::DESTROYSGAMEOBJECT);
 		}
@@ -57,9 +58,17 @@ void Bullet::Update(float dt)
 			notify(this, Event::DESTROYSGAMEOBJECT);
 		}
 
+		if (other->tag == BossTag) {
+
+			Destroyed = true;
+			notify(other, Event::BOSSHIT);
+			notify(this, Event::DESTROYSGAMEOBJECT);
+		}
+
+
 	}
 
-	if (Position.x < 0.0f || Position.x > SCREEN_WIDTH || Position.y < 150.0f || Position.y > SCREEN_HEIGHT) {
+	if (Position.x < 0.0f || Position.x > SCREEN_WIDTH || Position.y < 100.0f || Position.y > SCREEN_HEIGHT) {
 		Destroyed = true;
 		notify(this, Event::DESTROYSGAMEOBJECT);
 	}

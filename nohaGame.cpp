@@ -1,4 +1,5 @@
 #include <iostream>
+#include <imgui.h>
 
 #include "nohaGame.h"
 #include "Player.h"
@@ -7,30 +8,29 @@
 #include "Level.h"
 #include "Input.h"
 #include "Wall.h"
+#include "Boss.h"
 
+Boss* boss;
 Level* level;
 std::vector<Wall*> walls;
+int score;
+int hiScore;
 
 nohaGame::nohaGame(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Width(width), Height(height), NumberOfGameObjects(0)
 {
-
 }
 
 nohaGame::~nohaGame()
 {
     delete Renderer;
-
-    for (int i = 0; i < NumberOfGameObjects; i++) {
-        if (gameObjects[i])
-        {
-            delete gameObjects[i];
-        }
-    }
+    Clear();
 }
 
 void nohaGame::Init()
 {
+    score = 0;
+    hiScore = 0;
     State = GAME_MENU;
     // load shaders==============================================================
     ResourceManager::LoadShader("sprite.vert", "sprite.frag", nullptr, "sprite");
@@ -48,37 +48,7 @@ void nohaGame::Init()
     // load textures
     ResourceManager::LoadTexture("face.png", true, "face");
 
-    //Create things
-    Player* faceMan = new Player(glm::vec2(Width/2, Height - 50.0f), ResourceManager::GetTexture("face"));
-    faceMan->AddWorld(this);
-    AddGameObject(faceMan);
-
-    Wall* wallLeft = new Wall(glm::vec2(Width / 2 - 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
-    wallLeft->AddWorld(this);
-    walls.push_back(wallLeft);
-    AddGameObject(wallLeft);
-
-    Wall* wallRight = new Wall(glm::vec2(Width / 2 + 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
-    wallRight->AddWorld(this);
-    walls.push_back(wallRight);
-    AddGameObject(wallRight);
-
-
-    level = new Level();
-    level->Load("Squad.lvl", Width * 4/5, Height / 4);
-    level->AddWorld(this);
-    level->Spawn();
-
-    AddGameObject(level);
-
-
-    // Init all things
-    for (int i = 0; i < NumberOfGameObjects; i++) {
-        if (gameObjects[i])
-        {
-            gameObjects[i]->Init();
-        }
-    }
+    InitThing();
 }
 
 void nohaGame::Update(float dt)
@@ -94,28 +64,47 @@ void nohaGame::Update(float dt)
             }
         }
         break;
+    }
+}
+
+void nohaGame::ProcessInput(float dt)
+{
+    switch (State)
+    {
+    case GAME_ACTIVE:
+        break;
     case GAME_MENU:
         if (Input::IsPressed(GLFW_KEY_SPACE)) {
+            Clear();
+            InitThing();
             State = GAME_ACTIVE;
         }
         break;
     case GAME_WIN:
         if (Input::IsPressed(GLFW_KEY_SPACE)) {
+            Clear();
+            InitThing();
             State = GAME_ACTIVE;
         }
         break;
     default:
         break;
     }
-}
-
-void nohaGame::ProcessInput(float dt)
-{
 
 }
 
 void nohaGame::Render()
 {
+    ImGui::SetNextWindowPos(ImVec2(SCREEN_WIDTH/2 - 60.0f, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(200, 80), ImGuiCond_Always);
+
+    ImGui::Begin("SPACE INVANDER", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+    ImGui::Text("Score: %i", score);
+    ImGui::Text("High Score: %i", hiScore);
+
+    ImGui::End();
+
     for (int i = 0; i < NumberOfGameObjects; i++) {
         if (gameObjects[i]) {
             if (!gameObjects[i]->Destroyed) {
@@ -152,12 +141,62 @@ void nohaGame::RemoveGameObject(GameObject* gameObject)
     }
 
     //LOSE
-    if (gameObject->tag == PlayerTag) {
-    
-
+    if (gameObject->tag == PlayerTag && State == GAME_ACTIVE) {
         State = GAME_MENU;
     }
     delete gameObject;
+}
+
+void nohaGame::Clear()
+{
+    for (int i = 0; i < NumberOfGameObjects; i++) {
+        if (gameObjects[i])
+        {
+            RemoveGameObject(gameObjects[i]);
+        }
+    }
+
+    walls.clear();
+
+}
+
+void nohaGame::InitThing()
+{
+    score = 0;
+    //Create things
+    Player* faceMan = new Player(glm::vec2(Width / 2, Height - 50.0f), ResourceManager::GetTexture("face"));
+    faceMan->AddWorld(this);
+    AddGameObject(faceMan);
+
+    Wall* wallLeft = new Wall(glm::vec2(Width / 2 - 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
+    wallLeft->AddWorld(this);
+    walls.push_back(wallLeft);
+    AddGameObject(wallLeft);
+
+    Wall* wallRight = new Wall(glm::vec2(Width / 2 + 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
+    wallRight->AddWorld(this);
+    walls.push_back(wallRight);
+    AddGameObject(wallRight);
+
+    boss = new Boss(ResourceManager::GetTexture("face"));
+    boss->AddWorld(this);
+    AddGameObject(boss);
+
+    level = new Level();
+    level->Load("Squad.lvl", Width * 4 / 5, Height / 4);
+    level->AddWorld(this);
+    level->Spawn();
+
+    AddGameObject(level);
+
+
+    // Init all things
+    for (int i = 0; i < NumberOfGameObjects; i++) {
+        if (gameObjects[i])
+        {
+            gameObjects[i]->Init();
+        }
+    }
 }
 
 void nohaGame::onNotify(GameObject* entity, Event event)
@@ -188,6 +227,14 @@ void nohaGame::onNotify(GameObject* entity, Event event)
                 }
             }
         }
+        break;
+    case ENEMYHIT:
+        score += 2;
+        if (hiScore < score) hiScore = score;
+        break;
+    case BOSSHIT:
+        score += 10;
+        if (hiScore < score) hiScore = score;
         break;
     }
 }

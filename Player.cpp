@@ -18,6 +18,7 @@ Player::Player(glm::vec2 pos, Texture2D sprite, glm::vec3 color):
 void Player::Init()
 {
 	AddObserver(world);
+	canFire = false;
 }
 
 void Player::Fire()

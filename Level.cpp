@@ -64,8 +64,6 @@ void Level::CreateEnemies(std::vector<std::vector<unsigned int>> tileData, unsig
     // calculate dimensions
     unsigned int height = tileData.size();
     unsigned int width = tileData[0].size(); // note we can index vector at [0] since this function is only called if height > 0
-    std::cout << "Height: " << height << std::endl;
-    std::cout << "Width: " << width << std::endl;
     float unit_width = levelWidth / static_cast<float>(width), unit_height = levelHeight / height;
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)
@@ -84,7 +82,7 @@ void Level::CreateEnemies(std::vector<std::vector<unsigned int>> tileData, unsig
                 color = glm::vec3(1.0f, 0.5f, 0.0f);
 
             glm::vec2 pos(unit_width * x, unit_height * y);
-            Enemy* enemy = new Enemy(pos + glm::vec2(80.0f, 180.0f), ResourceManager::GetTexture("face"), color);
+            Enemy* enemy = new Enemy(pos + glm::vec2(80.0f, 200.0f), ResourceManager::GetTexture("face"), color);
             this->enemies.push_back(enemy);
         }
     }

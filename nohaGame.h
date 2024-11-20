@@ -41,6 +41,10 @@ public:
     void Render();
     void AddGameObject(GameObject* gameObject);
     void RemoveGameObject(GameObject* gameObject);
+
+    void Clear();
+    void InitThing();
+
     void onNotify(GameObject* entity, Event event) override;
 
 private:
