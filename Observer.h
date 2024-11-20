@@ -3,7 +3,10 @@
 #include "GameObject.h"
 
 enum Event {
-	DESTROYSGAMEOBJECT
+	DESTROYSGAMEOBJECT,
+	PLAYERWIN,
+	PLAYERLOSE,
+	WALLHIT
 };
 
 class Observer

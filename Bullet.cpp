@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "Collision.h"
 #include "nohaGame.h"
+#include "Wall.h"
 
 //Debug
 #include <iostream>
@@ -46,6 +47,13 @@ void Bullet::Update(float dt)
 		{
 			Destroyed = true;
 			notify(other, Event::DESTROYSGAMEOBJECT);
+			notify(this, Event::DESTROYSGAMEOBJECT);
+		}
+
+		if (other->tag == WALL) {
+
+			Destroyed = true;
+			notify(other, Event::WALLHIT);
 			notify(this, Event::DESTROYSGAMEOBJECT);
 		}
 

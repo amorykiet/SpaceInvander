@@ -5,8 +5,11 @@
 #include "ResourceManager.h"
 #include "Enemy.h"
 #include "Level.h"
+#include "Input.h"
+#include "Wall.h"
 
 Level* level;
+std::vector<Wall*> walls;
 
 nohaGame::nohaGame(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Width(width), Height(height), NumberOfGameObjects(0)
@@ -28,6 +31,7 @@ nohaGame::~nohaGame()
 
 void nohaGame::Init()
 {
+    State = GAME_MENU;
     // load shaders==============================================================
     ResourceManager::LoadShader("sprite.vert", "sprite.frag", nullptr, "sprite");
     // configure shaders
@@ -49,6 +53,17 @@ void nohaGame::Init()
     faceMan->AddWorld(this);
     AddGameObject(faceMan);
 
+    Wall* wallLeft = new Wall(glm::vec2(Width / 2 - 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
+    wallLeft->AddWorld(this);
+    walls.push_back(wallLeft);
+    AddGameObject(wallLeft);
+
+    Wall* wallRight = new Wall(glm::vec2(Width / 2 + 150.0f, Height - 150.0f), ResourceManager::GetTexture("face"));
+    wallRight->AddWorld(this);
+    walls.push_back(wallRight);
+    AddGameObject(wallRight);
+
+
     level = new Level();
     level->Load("Squad.lvl", Width * 4/5, Height / 4);
     level->AddWorld(this);
@@ -68,13 +83,29 @@ void nohaGame::Init()
 
 void nohaGame::Update(float dt)
 {
-
-    for (int i = 0; i < NumberOfGameObjects; i++) {
-        if (gameObjects[i]) {
-            if (!gameObjects[i]->Destroyed) {
-                gameObjects[i]->Update(dt);
+    switch (State)
+    {
+    case GAME_ACTIVE:
+        for (int i = 0; i < NumberOfGameObjects; i++) {
+            if (gameObjects[i]) {
+                if (!gameObjects[i]->Destroyed) {
+                    gameObjects[i]->Update(dt);
+                }
             }
         }
+        break;
+    case GAME_MENU:
+        if (Input::IsPressed(GLFW_KEY_SPACE)) {
+            State = GAME_ACTIVE;
+        }
+        break;
+    case GAME_WIN:
+        if (Input::IsPressed(GLFW_KEY_SPACE)) {
+            State = GAME_ACTIVE;
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -119,6 +150,13 @@ void nohaGame::RemoveGameObject(GameObject* gameObject)
     {
         level->RemoveEnemy(gameObject->ID);
     }
+
+    //LOSE
+    if (gameObject->tag == PlayerTag) {
+    
+
+        State = GAME_MENU;
+    }
     delete gameObject;
 }
 
@@ -129,6 +167,28 @@ void nohaGame::onNotify(GameObject* entity, Event event)
     case Event::DESTROYSGAMEOBJECT:
         entity->Destroyed = true;
         RemoveGameObject(entity);
+        break;
+
+    case PLAYERWIN:
+        State = GAME_WIN;
+        break;
+
+    case PLAYERLOSE:
+        State = GAME_MENU;
+        break;
+    case WALLHIT:
+
+        for (Wall* wall : walls) {
+            if (!wall) continue;
+            if (wall->ID == entity->ID) {
+                wall->health--;
+                if (wall->health <= 0) {
+                    wall->Destroyed = true;
+                    RemoveGameObject(wall);
+                }
+            }
+        }
+        break;
     }
 }
 

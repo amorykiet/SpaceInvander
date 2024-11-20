@@ -24,11 +24,6 @@ void Enemy::Init()
 
 void Enemy::Fire()
 {
-	if (Destroyed) {
-		std::cout << "Destroyed" << std::endl;
-		return;
-	}
-	std::cout << "Fired" << std::endl;
 	Bullet* bullet = new Bullet(Position + glm::vec2(0.0f, 20.0f), Sprite, glm::vec2(0.0f, 1.0f), BulletFromEnemyTag);
 
 	//NOT GOOD
@@ -91,6 +86,10 @@ void Enemy::Update(float dt) {
 				break;
 			}
 		}
+	}
+
+	if (Position.y > SCREEN_HEIGHT - 200.0f) {
+		notify(this, PLAYERLOSE);
 	}
 }
 

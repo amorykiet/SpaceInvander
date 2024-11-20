@@ -163,11 +163,13 @@
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="nohaGame.h" />
     <ClInclude Include="GameObject.h" />

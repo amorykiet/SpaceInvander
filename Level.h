@@ -9,9 +9,9 @@
 #include "nohaGame.h"
 #include "GameObject.h"
 #include "Enemy.h"
-#include "Observer.h"
+#include "Subject.h"
 
-class Level : public GameObject{
+class Level : public GameObject, public Subject{
 
 public:
     Level();

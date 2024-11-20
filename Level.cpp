@@ -30,6 +30,7 @@ void Level::Update(float dt)
 
 void Level::Init()
 {
+    AddObserver(world);
     timeToFire = 1.5f;
     timeCount = timeToFire;
 }
@@ -104,7 +105,9 @@ void Level::RemoveEnemy(int ID)
 {
     inGameEnemies.erase(ID);
     numberOfEnemies--;
-    std::cout << "Number of Enemies: " << numberOfEnemies << " vs " << inGameEnemies.size() << std::endl;
+    if (numberOfEnemies == 0) {
+        notify(this, PLAYERWIN);
+    }
 }
 
 void Level::AddWorld(nohaGame* world)
