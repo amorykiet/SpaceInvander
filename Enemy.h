@@ -7,6 +7,14 @@
 #include "GameObject.h"
 #include "Subject.h"
 
+enum EnemyMoveState
+{
+    ENEMY_MOVE_RIGHT,
+    ENEMY_MOVE_RIGHT_DOWN,
+    ENEMY_MOVE_LEFT,
+    ENEMY_MOVE_LEFT_DOWN,
+};
+
 class Enemy : public GameObject, public Subject {
 
 public:
@@ -20,5 +28,7 @@ public:
 
 private:
 
+    float countTime;
+    float moveTime;
     nohaGame* world;
 };

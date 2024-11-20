@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "ResourceManager.h"
 #include "Enemy.h"
+#include "Level.h"
 
 
 nohaGame::nohaGame(unsigned int width, unsigned int height)
@@ -47,9 +48,10 @@ void nohaGame::Init()
     faceMan->AddWorld(this);
     AddGameObject(faceMan);
 
-    Enemy* faceEnemy = new Enemy(glm::vec2(Width / 2, 200.0f), ResourceManager::GetTexture("face"));
-    faceEnemy->AddWorld(this);
-    AddGameObject(faceEnemy);
+    Level* level = new Level();
+    level->Load("Squad.lvl", Width * 4/5, Height / 4);
+    level->AddWorld(this);
+    level->Spawn();
 
 
     // Init all things

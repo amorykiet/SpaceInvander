@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
+
 Enemy::Enemy() : GameObject()
 {
 	tag = Tag::EnemyTag;
